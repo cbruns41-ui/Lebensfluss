@@ -1,0 +1,27 @@
+# Domains anpassen, dann: docker compose up -d
+# Caddy holt Let's-Encrypt-Zertifikate automatisch.
+
+{$APP_DOMAIN:lebensfluss.de} {
+	root * /srv/app
+	encode gzip
+	file_server
+	try_files {path} /index.html
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy strict-origin-when-cross-origin
+	}
+}
+
+{$API_DOMAIN:api.lebensfluss.de} {
+	encode gzip
+	reverse_proxy pocketbase:8090
+
+	header {
+		Access-Control-Allow-Origin {$APP_URL:https://lebensfluss.de}
+		Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+		Access-Control-Allow-Headers "Authorization, Content-Type"
+	}
+}

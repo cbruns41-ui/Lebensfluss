@@ -1,0 +1,24 @@
+# Nur PocketBase-API – Frontend liegt auf Vercel
+# Start: docker compose -f deploy/docker-compose.api.yml --env-file deploy/.env up -d
+
+{$API_DOMAIN:api.lebensfluss.de} {
+	encode gzip
+	reverse_proxy pocketbase:8090
+
+	@options method OPTIONS
+	handle @options {
+		header Access-Control-Allow-Origin {$APP_URL:https://lebensfluss.de}
+		header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+		header Access-Control-Allow-Headers "Authorization, Content-Type"
+		header Access-Control-Max-Age "86400"
+		respond 204
+	}
+
+	header {
+		Access-Control-Allow-Origin {$APP_URL:https://lebensfluss.de}
+		Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+		Access-Control-Allow-Headers "Authorization, Content-Type"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options nosniff
+	}
+}

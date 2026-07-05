@@ -1,0 +1,43 @@
+# Hetzner VPS – nur PocketBase + API (Frontend auf Vercel)
+# Start: docker compose --env-file deploy/.env -f deploy/docker-compose.api.yml up -d
+
+services:
+  pocketbase:
+    image: ghcr.io/muchobien/pocketbase:latest
+    restart: unless-stopped
+    expose:
+      - "8090"
+    volumes:
+      - ../pocketbase/pb_data:/pb_data
+      - ../pocketbase/pb_hooks:/pb_hooks
+    environment:
+      PB_SUPPORT_FROM: ${PB_SUPPORT_FROM:-noreply@lebensfluss.de}
+      APP_URL: ${APP_URL:-https://lebensfluss.de}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      STRIPE_PRICE_LIFETIME: ${STRIPE_PRICE_LIFETIME:-}
+      STRIPE_PRICE_MONTHLY: ${STRIPE_PRICE_MONTHLY:-}
+      STRIPE_PRICE_YEARLY: ${STRIPE_PRICE_YEARLY:-}
+    command: serve --http=0.0.0.0:8090 --dir=/pb_data --hooksDir=/pb_hooks
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8090/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile.api-only:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - pocketbase
+
+volumes:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,71 @@
+[
+  {
+    "name": "news",
+    "type": "base",
+    "system": false,
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "@request.auth.role = \"admin\"",
+    "updateRule": "@request.auth.role = \"admin\"",
+    "deleteRule": "@request.auth.role = \"admin\"",
+    "fields": [
+      { "name": "title", "type": "text", "required": true, "presentable": true },
+      { "name": "content", "type": "text", "required": true },
+      { "name": "pinned", "type": "bool", "required": false },
+      { "name": "publishedAt", "type": "date", "required": true }
+    ]
+  },
+  {
+    "name": "support_tickets",
+    "type": "base",
+    "system": false,
+    "listRule": "@request.auth.role = \"admin\"",
+    "viewRule": "@request.auth.role = \"admin\"",
+    "createRule": "",
+    "updateRule": "@request.auth.role = \"admin\"",
+    "deleteRule": "@request.auth.role = \"admin\"",
+    "fields": [
+      { "name": "userName", "type": "text", "required": true },
+      { "name": "userEmail", "type": "email", "required": true },
+      { "name": "userId", "type": "text", "required": false },
+      { "name": "subject", "type": "text", "required": true },
+      { "name": "message", "type": "text", "required": true },
+      { "name": "status", "type": "select", "required": true, "values": ["open", "closed"] },
+      { "name": "notifyEmails", "type": "text", "required": false }
+    ]
+  },
+  {
+    "name": "site_config",
+    "type": "base",
+    "system": false,
+    "listRule": "@request.auth.role = \"admin\"",
+    "viewRule": "@request.auth.role = \"admin\"",
+    "createRule": "@request.auth.role = \"admin\"",
+    "updateRule": "@request.auth.role = \"admin\"",
+    "deleteRule": "@request.auth.role = \"admin\"",
+    "fields": [
+      { "name": "key", "type": "text", "required": true },
+      { "name": "supportEmails", "type": "json", "required": true }
+    ]
+  },
+  {
+    "name": "licenses",
+    "type": "base",
+    "system": false,
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "fields": [
+      { "name": "email", "type": "email", "required": true, "presentable": true },
+      { "name": "localUserId", "type": "text", "required": false },
+      { "name": "subscription", "type": "json", "required": true },
+      { "name": "acceptedTermsAt", "type": "date", "required": false },
+      { "name": "acceptedPrivacyAt", "type": "date", "required": false },
+      { "name": "stripeCustomerId", "type": "text", "required": false },
+      { "name": "stripeSubscriptionId", "type": "text", "required": false },
+      { "name": "updatedAt", "type": "date", "required": true }
+    ]
+  }
+]
