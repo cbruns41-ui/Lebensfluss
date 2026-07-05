@@ -124,6 +124,11 @@ export function JournalPage() {
         </div>
       ) : (
         <div className="space-y-2">
+          {sortedNotes.length === 0 && (
+            <Card className="text-center py-8 text-muted text-sm">
+              Noch keine Notizen — nutze den grünen + Button unten rechts, um von überall eine Notiz zu erstellen.
+            </Card>
+          )}
           {sortedNotes.map(note => (
             <Card key={note.id} className={cn('flex items-start gap-3', note.pinned && 'border-amber-500/30')}>
               <button onClick={() => togglePin(note.id)} className={note.pinned ? 'text-amber-400' : 'text-faint'}><Pin size={14} /></button>

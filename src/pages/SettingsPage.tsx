@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
-  Sun, Moon, Monitor, Download, Upload, Droplets, Timer, PiggyBank, Bell, RotateCcw,
+  Sun, Moon, Monitor, Download, Upload, Droplets, Timer, PiggyBank, RotateCcw,
   CreditCard, Trash2, XCircle, LifeBuoy, Target, Flame,
 } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
@@ -190,7 +190,10 @@ export function SettingsPage() {
       <Card className="mb-6 space-y-3">
         <div className="flex items-center gap-3">
           <Droplets size={18} className="text-cyan-400" />
-          <Input label="Tagesziel Wasser (ml)" type="number" value={String(data.settings.waterGoalMl)} onChange={e => updateSettings({ waterGoalMl: parseInt(e.target.value) || 2500 })} />
+          <div className="flex-1 grid grid-cols-2 gap-2">
+            <Input label="Tagesziel Wasser (ml)" type="number" value={String(data.settings.waterGoalMl)} onChange={e => updateSettings({ waterGoalMl: parseInt(e.target.value) || 2500 })} />
+            <Input label="Glasgröße (ml)" type="number" value={String(data.settings.waterGlassMl)} onChange={e => updateSettings({ waterGlassMl: parseInt(e.target.value) || 250 })} />
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <Timer size={18} className="text-emerald-400" />
@@ -201,11 +204,14 @@ export function SettingsPage() {
         </div>
         <div className="flex items-center gap-3">
           <PiggyBank size={18} className="text-amber-400" />
-          <div className="flex gap-2">
+          <div className="flex-1">
+            <p className="text-sm font-medium mb-2">Spar-Challenge Basis (€/Woche 1)</p>
+            <div className="flex gap-2">
             {[5, 10, 20, 25].map(inc => (
               <button key={inc} onClick={() => applySavingsIncrement(inc)}
                 className={cn('px-3 py-1.5 rounded-xl text-sm', data.settings.savingsIncrement === inc ? 'bg-amber-500/20 text-amber-400' : 'glass')}>{inc}€</button>
             ))}
+            </div>
           </div>
         </div>
       </Card>
@@ -291,19 +297,6 @@ export function SettingsPage() {
         <input ref={fileRef} type="file" accept=".json" className="hidden" onChange={handleImport} />
         {importMsg && <p className="text-xs text-center text-emerald-400">{importMsg}</p>}
         <Button variant="danger" className="w-full" onClick={resetData}><RotateCcw size={16} /> Alle Daten zurücksetzen</Button>
-      </Card>
-
-      <Card className="flex items-center gap-4 py-3.5">
-        <Bell size={20} className="text-muted" />
-        <div className="flex-1">
-          <p className="text-sm font-medium">Tägliche Erinnerung (9:00)</p>
-        </div>
-        <button onClick={() => {
-          if (!data.settings.dailyReminder && 'Notification' in window) Notification.requestPermission()
-          updateSettings({ dailyReminder: !data.settings.dailyReminder })
-        }} className={cn('w-12 h-7 rounded-full relative', data.settings.dailyReminder ? 'bg-emerald-500' : 'bg-slate-700')}>
-          <div className={cn('w-5 h-5 rounded-full bg-white absolute top-1 transition-all', data.settings.dailyReminder ? 'left-6' : 'left-1')} />
-        </button>
       </Card>
 
       <p className="text-center text-xs text-faint mt-8">{brand.name} v{brand.version}</p>

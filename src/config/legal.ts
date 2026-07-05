@@ -15,7 +15,11 @@ export const legalConfig = {
   responsiblePerson: '[Name des Verantwortlichen für den Inhalt]',
   registerCourt: '',
   registerNumber: '',
-  /** Hosting */
+  /** Frontend-Hosting */
+  frontendHostingProvider: 'Vercel Inc.',
+  frontendHostingLocation: 'USA (CDN weltweit, inkl. EU-Rechenzentren)',
+  frontendHostingPrivacyUrl: 'https://vercel.com/legal/privacy-policy',
+  /** API-Hosting */
   hostingProvider: 'Hetzner Online GmbH',
   hostingLocation: 'Deutschland (EU)',
   hostingPrivacyUrl: 'https://www.hetzner.com/de/legal/privacy-policy',
@@ -28,9 +32,9 @@ export const legalConfig = {
   supervisoryAuthority: '[Zuständige Landesdatenschutzbehörde]',
   supervisoryAuthorityUrl: 'https://www.bfdi.bund.de/DE/Service/Anschriften/Laender/Laender-node.html',
   /** Rechtstexte */
-  legalLastUpdated: 'Juni 2026',
+  legalLastUpdated: 'Juli 2026',
   contractLanguage: 'Deutsch',
-}
+} as const
 
 export function formatAddress(): string {
   const { street, zip, city, country } = legalConfig

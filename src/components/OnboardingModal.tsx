@@ -13,12 +13,12 @@ const steps = [
   {
     icon: Target,
     title: 'Gewohnheiten aufbauen',
-    desc: 'Nutze den 31-Tage-Tracker und baue dauerhafte Routinen auf. Wähle aus Vorlagen oder erstelle eigene Gewohnheiten.',
+    desc: 'Nutze die 31-Tage-Übersicht und baue dauerhafte Routinen auf. Wähle aus Vorlagen oder erstelle eigene Gewohnheiten.',
   },
   {
     icon: Droplets,
-    title: 'Wellness tracken',
-    desc: 'Tracke Wasser, Stimmung und Schlaf. Schreibe Tagebuch, nutze den Fokus-Timer und sammle Erfolge.',
+    title: 'Wellness dokumentieren',
+    desc: 'Erfasse Wasser, Stimmung und Schlaf. Schreibe Tagebuch, nutze den Fokus-Timer und sammle Erfolge.',
   },
   {
     icon: Wallet,

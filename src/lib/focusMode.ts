@@ -9,7 +9,7 @@ export const FOCUS_MODE_LABELS: Record<FocusMode, string> = {
 export const FOCUS_MODE_DESCRIPTIONS: Record<FocusMode, string> = {
   full: 'Alle Module sichtbar – dein normaler Modus mit vollem Überblick.',
   light: 'Reduziertes Dashboard: Kernbereiche im Fokus, weniger Ablenkung.',
-  basics: 'Minimal: nur Gewohnheiten, Wellness und Budget – für volle oder stressige Wochen.',
+  basics: 'Minimal: Gewohnheiten, Wellness, Budget und Einkauf – für volle oder stressige Wochen.',
 }
 
 export const FOCUS_MODE_ICONS: Record<FocusMode, string> = {

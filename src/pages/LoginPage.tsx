@@ -49,6 +49,11 @@ export function LoginPage() {
                 ? 'Melde dich an – deine Daten liegen nur auf diesem Gerät.'
                 : 'Registriere dich lokal – danach wählst du Testphase oder Plan.'}
             </p>
+            {mode === 'login' && isAdminEmail(email) && (
+              <p className="text-xs text-emerald-400/90 mt-2">
+                Admin-Zugang → nach dem Login gelangst du in den News-Bereich.
+              </p>
+            )}
           </div>
 
           <form onSubmit={handleSubmit} className="glass rounded-3xl p-6 space-y-4">

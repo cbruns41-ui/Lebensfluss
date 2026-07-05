@@ -32,12 +32,12 @@ export const pageHelp: Record<string, PageHelpContent> = {
     title: 'Gewohnheiten – Hilfe',
     intro: 'Baue Routinen mit klarem Zeitplan, Streaks und optionalen Erinnerungen.',
     sections: [
-      { title: 'Heute-Ansicht', content: 'Nur heute fällige Gewohnheiten. Ein Tipp = abhaken oder Rückgängig. Der Fortschrittsring oben zeigt deinen Tagesstand.' },
+      { title: 'Heute-Ansicht', content: 'Nur heute fällige Gewohnheiten. Ein Tipp = abhaken oder Rückgängig. Die Fortschrittsanzeige oben zeigt deinen Tagesstand.' },
       { title: 'Zeitplan', content: 'Täglich · bestimmte Wochentage (z. B. Mo–Fr) · oder flexibel „X-mal pro Woche". Streaks zählen nur an Tagen, an denen die Gewohnheit laut Plan fällig ist.' },
-      { title: 'Erinnerungen', content: 'Pro Gewohnheit eine Uhrzeit. Zusätzlich optional abends „Streak in Gefahr" (Einstellungen), wenn noch etwas offen ist.' },
+      { title: 'Erinnerungen', content: 'Pro Gewohnheit eine Uhrzeit. Zusätzlich optional abends „Streak-Warnung" (Einstellungen), wenn noch etwas offen ist.' },
       { title: 'Verknüpfung mit Zielen', content: 'In Zielen kannst du Gewohnheiten verknüpfen — sogar mit automatischem Fortschritt. Jedes Abhaken hier kann dein Ziel mitzählen.' },
-      { title: 'Kalender & Streak', content: 'In der Monatsansicht: dunkel = nicht fällig, hell = fällig, ausgefüllt = erledigt. Streak-Zahl zeigt deine aktuelle Serie.' },
-      { title: 'Bearbeiten & Löschen', content: 'Stift: Name, Icon, Zeitplan, Erinnerung. Mülleimer: löscht die Gewohnheit und alle bisherigen Häkchen.' },
+      { title: 'Ansichten „31 Tage" & „Monat"', content: 'In „31 Tage": Streak und Verlauf der letzten Wochen. In „Monat": dunkel = nicht fällig, hell = fällig, ausgefüllt = erledigt.' },
+      { title: 'Bearbeiten & Löschen', content: 'In der Ansicht „31 Tage": Stift bearbeitet Name, Icon, Zeitplan und Erinnerung. Mülleimer löscht die Gewohnheit und alle bisherigen Häkchen.' },
     ],
     tips: [
       'Starte mit 2–3 Gewohnheiten — Erfolg kommt von Beständigkeit, nicht von Menge.',
@@ -76,7 +76,7 @@ export const pageHelp: Record<string, PageHelpContent> = {
     ],
     tips: [
       'Ablauf: Woche planen → „Aus Wochenplan" → Einkauf-Tab → Einkaufsmodus im Laden → optional Budget buchen.',
-      'Einstellungen: Schalter „Einkauf ins Budget übernehmen" dauerhaft an/aus.',
+      'Einstellungen: Schalter „Einkauf ins Budget übernehmen" (dauerhaft an/aus). Auf der Einkaufsseite heißt derselbe Schalter „Einkauf im Budget erfassen".',
     ],
   },
   essen: {
@@ -89,7 +89,7 @@ export const pageHelp: Record<string, PageHelpContent> = {
       { title: 'Tab „Rezepte"', content: 'Dein Rezeptbuch: Name, Zutaten (je Zeile oder kommagetrennt), Zubereitung, Portionen, Zeit, geschätzte Kosten in €. Aktionen: „Heute", „Tag" (Wochentag), „Zutaten" (→ Einkaufsliste).' },
       { title: 'Tab „Einkauf"', content: 'Kurzversion der Einkaufsliste — dieselben Daten wie unter Navigation → Einkauf. Tipp-Box verweist auf die eigene Einkaufsseite fürs Einkaufen unterwegs.' },
       { title: 'Vorlagen', content: '„Gesund & leicht", „Fitness" oder „Budget-freundlich" füllen die ganze Woche. Bestätigung nötig — dein alter Plan wird ersetzt.' },
-      { title: 'Tag kopieren', content: 'Beim Aufklappen eines Tages: Mahlzeiten vom Vortag übernehmen — spart Zeit bei ähnlichen Tagen.' },
+      { title: 'Von Vortag übernehmen', content: 'Beim Aufklappen eines Tages: Button „Von [Wochentag] übernehmen" kopiert die Mahlzeiten vom Vortag — spart Zeit bei ähnlichen Tagen.' },
       { title: 'Geschätzte Kosten', content: 'Pro Rezept optional € — sichtbar in der Rezept-Zeile, im Budget unter „Meal Prep & Einkauf" und als Vorschlag beim Einkaufs-Abschluss.' },
     ],
     tips: [
@@ -101,7 +101,7 @@ export const pageHelp: Record<string, PageHelpContent> = {
     title: 'Wellness – Hilfe',
     intro: 'Wasser, Stimmung und Schlaf — die Basis für deinen Wellness-Anteil im Life Score.',
     sections: [
-      { title: 'Wasser', content: 'Glas-Button nutzt deine Glasgröße aus den Einstellungen. Alternativ +500 ml oder manuelle Eingabe. Tagesziel ebenfalls in Einstellungen änderbar.' },
+      { title: 'Wasser', content: 'Glas-Button nutzt deine Glasgröße aus den Einstellungen (Standard: 250 ml). Alternativ +500 ml oder manuelle Eingabe. Tagesziel ebenfalls in Einstellungen änderbar.' },
       { title: 'Stimmung', content: 'Emoji für heute wählen (1–5). Stift bearbeitet den heutigen Eintrag. Fließt in den Life Score und in Insights.' },
       { title: 'Schlaf', content: 'Stunden per Slider, Qualität per Sterne. „Zurücksetzen" löscht den heutigen Schlaf-Eintrag.' },
       { title: '7-Tage-Charts', content: 'Mini-Diagramme unter Wasser und Stimmung — erkenne Trends (z. B. wenig Wasser montags).' },
@@ -143,7 +143,7 @@ export const pageHelp: Record<string, PageHelpContent> = {
     sections: [
       { title: 'Prinzip', content: 'Woche 1 = Basisbetrag (z. B. 10 €), Woche 2 = 20 €, … bis Woche 52. Basis in Einstellungen wählbar (5/10/20/25 €).' },
       { title: 'Abhaken', content: 'Woche antippen = gespart. Nochmal tippen = rückgängig. Oben siehst du Gesamtsumme und Fortschritt.' },
-      { title: 'Budget-Verknüpfung', content: 'Mit „Im Budget buchen" wird beim Abhaken eine Einnahme erfasst — im Finanz-Tracker sichtbar. Beim Rückgängigmachen wird der Eintrag entfernt.' },
+      { title: 'Budget-Verknüpfung', content: 'Mit „Im Budget buchen" wird beim Abhaken eine Einnahme erfasst — im Budget sichtbar. Beim Rückgängigmachen wird der Eintrag entfernt.' },
       { title: 'Ziel', content: 'Bei 10 € Basis sparst du am Ende 13.780 € über 52 Wochen — Motivation durch sichtbare Kästchen.' },
     ],
     tips: [
@@ -174,7 +174,7 @@ export const pageHelp: Record<string, PageHelpContent> = {
       { title: 'Ziel erreicht', content: 'Bei 100 %: Erfolgsmeldung und Abzeichen „Ziel erreicht" in den Erfolgen.' },
     ],
     tips: [
-      'Gewohnheits-Ziele: Einheit „Mal" oder „Tage" + „Fortschritt aus Gewohnheiten" = automatisches Tracking.',
+      'Gewohnheits-Ziele: Einheit „Mal" oder „Tage" + „Fortschritt aus Gewohnheiten" = automatische Fortschrittszählung.',
     ],
   },
   statistik: {
@@ -222,10 +222,10 @@ export const pageHelp: Record<string, PageHelpContent> = {
     intro: 'Geführter Wochenstart in 5 Schritten — ideal sonntags oder montags.',
     sections: [
       { title: 'Schritt 1 – Rückblick', content: 'Deine Woche in Zahlen (Life Score, Gewohnheiten, Budget, Fokus). Optional Wochenreview öffnen und Eintrag schreiben.' },
-      { title: 'Schritt 2 – Fokus-Gewohnheiten', content: 'Bis zu 3 Habits als Priorität für die neue Woche — erscheinen auf dem Dashboard.' },
+      { title: 'Schritt 2 – Fokus-Gewohnheiten', content: 'Bis zu 3 Gewohnheiten als Priorität für die neue Woche — die Anzahl erscheint im Fokus-Woche-Banner auf dem Dashboard.' },
       { title: 'Schritt 3 – Fokus-Woche', content: 'Volle Woche (alles sichtbar) · Leichte Woche (weniger Module) · Nur Basics (Gewohnheiten, Wellness, Budget, Einkauf).' },
       { title: 'Schritt 4 – Meal Prep', content: 'Fortschritt des Wochenplans — Link zu Essen, wenn noch Lücken sind.' },
-      { title: 'Schritt 5 – Budget', content: 'Monats-Ausgaben vs. Limit — Link zum Finanz-Tracker.' },
+      { title: 'Schritt 5 – Budget', content: 'Monats-Ausgaben vs. Limit — Link zum Budget.' },
       { title: 'Abschluss', content: 'Life Score Wochenreport teilen oder kopieren. Ritual gilt pro Kalenderwoche — Dashboard erinnert, bis es erledigt ist.' },
     ],
     tips: [
@@ -251,10 +251,10 @@ export const pageHelp: Record<string, PageHelpContent> = {
     intro: 'Profil, Darstellung, Modul-Optionen, Backup und Konto.',
     sections: [
       { title: 'Profil', content: 'Name, E-Mail, Passwort ändern. Alles lokal auf diesem Gerät gespeichert.' },
-      { title: 'Design', content: 'Dunkel, Hell oder System (folgt dem Handy).' },
-      { title: 'Gewohnheiten & Erinnerungen', content: 'Morgen-Zusammenfassung (9:00), abendliche Streak-Warnung und Uhrzeit. Einzelne Habits haben eigene Erinnerungszeiten.' },
-      { title: 'Essen & Finanzen', content: '„Einkauf ins Budget übernehmen": Nach kompletter Einkaufsliste Dialog für Ausgaben-Buchung. Spar-Challenge-Basis (5–25 €) ebenfalls hier.' },
-      { title: 'Wellness & Timer', content: 'Wasserziel, Glasgröße, Pomodoro-Fokus- und Pausenlänge.' },
+      { title: 'Erscheinungsbild', content: 'Dunkel, Hell oder System (folgt dem Handy).' },
+      { title: 'Gewohnheiten & Erinnerungen', content: 'Morgen-Zusammenfassung (9:00), abendliche Streak-Warnung und Uhrzeit. Einzelne Gewohnheiten haben eigene Erinnerungszeiten.' },
+      { title: 'Essen & Finanzen', content: '„Einkauf ins Budget übernehmen": Nach kompletter Einkaufsliste Dialog für Ausgaben-Buchung.' },
+      { title: 'Wellness & Timer', content: 'Wasserziel, Glasgröße, Pomodoro-Fokus- und Pausenlänge, Spar-Challenge-Basis (5–25 €).' },
       { title: 'Backup', content: 'JSON exportieren/importieren — bei Handywechsel oder vor „Daten zurücksetzen" unbedingt nutzen!' },
       { title: 'Daten zurücksetzen', content: 'Löscht alle Inhalte, Konto bleibt. Mit Sicherheitsabfrage.' },
       { title: 'Abo & Konto', content: 'Abo-Status, Kündigung, Konto löschen. Rechtliches über Impressum/Datenschutz in der App.' },

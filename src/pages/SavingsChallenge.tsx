@@ -75,7 +75,7 @@ export function SavingsChallenge() {
 
   return (
     <div className="px-5 pt-6 safe-top max-w-lg mx-auto">
-      <PageHeader title="52-Wochen Challenge" subtitle="Spare Woche für Woche" helpId="spar-challenge" />
+      <PageHeader title="Spar-Challenge" subtitle="52 Wochen — Schritt für Schritt sparen" helpId="spar-challenge" />
 
       <Card className="mb-6 bg-gradient-to-br from-amber-500/15 to-transparent border-amber-500/20">
         <div className="flex items-center gap-5">

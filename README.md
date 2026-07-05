@@ -1,73 +1,59 @@
-# React + TypeScript + Vite
+# Lebensfluss
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Progressive Web App für Gewohnheiten, Budget, Wellness, Essensplanung und Wochenreflexion — auf Deutsch, datenschutzfreundlich mit lokaler Datenspeicherung.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Life Score** — Gesamtüberblick aus Gewohnheiten, Wellness, Budget, Fokus und Reflexion
+- **Gewohnheiten** — Tägliche Routinen mit Streaks und Erinnerungen
+- **Budget** — Einnahmen, Ausgaben, Daueraufträge, CSV-Import
+- **Meal Prep & Einkauf** — Wochenplan, Rezepte, automatische Einkaufsliste
+- **Wellness** — Wasser, Stimmung, Schlaf
+- **Sonntags-Ritual & Wochenreview** — Geführter Wochenstart
+- **PWA** — Installierbar auf dem Handy mit Offline-Unterstützung
 
-## React Compiler
+## Entwicklung
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Öffne http://localhost:5173
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Umgebungsvariablen
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Kopiere `.env.example` nach `.env.local`:
+
+```env
+VITE_POCKETBASE_URL=/pb          # lokal mit Docker
+VITE_APP_URL=http://localhost:5173
+VITE_STRIPE_ENABLED=false
 ```
+
+## Build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Deployment
+
+- **Frontend:** [Vercel](https://vercel.com) — siehe `vercel.json` und `deploy/vercel.env.example`
+- **API (PocketBase):** Hetzner VPS — siehe `deploy/docker-compose.api.yml`
+
+```bash
+npm run icons    # PWA-Icons neu generieren
+```
+
+## Admin
+
+News und Support verwalten unter `/admin` (nach Login mit Admin-Zugang).
+
+## Technik
+
+- React 19 + TypeScript + Vite
+- Tailwind CSS 4
+- PocketBase (optional, für Abo, Support, News)
+- Stripe (optional, für Bezahlung)

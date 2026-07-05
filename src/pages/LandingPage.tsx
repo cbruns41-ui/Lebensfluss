@@ -8,24 +8,25 @@ import {
 import { Button } from '../components/ui/Button'
 import { LegalFooter } from '../components/legal/LegalFooter'
 import { useAuth } from '../contexts/AuthContext'
+import { isAdmin } from '../lib/admin'
 import { pricing, formatPrice } from '../config/pricing'
 import { NewsFeed } from '../components/NewsFeed'
 import { Logo, LogoMark } from '../components/brand/Logo'
 
 
 const features = [
-  { icon: Sparkles, title: 'Life Score', desc: 'Eine Zahl zeigt dir, wie gut deine Woche läuft — aus Sport, Schlaf, Geld, Fokus und mehr.', color: 'emerald' },
+  { icon: Sparkles, title: 'Life Score', desc: 'Eine Zahl zeigt dir, wie gut deine Woche läuft — aus Gewohnheiten, Wellness, Budget, Fokus und Reflexion.', color: 'emerald' },
   { icon: Sun, title: 'Sonntags-Ritual', desc: 'Jeden Sonntag in wenigen Minuten: Was lief gut? Worauf legst du diese Woche Wert? Essen & Geld kurz checken.', color: 'amber' },
   { icon: Target, title: 'Gewohnheiten', desc: 'Täglich abhaken, Streaks sehen, Erinnerungen bekommen — z. B. für Sport, Lesen oder früh aufstehen.', color: 'emerald' },
   { icon: Flag, title: 'Ziele', desc: 'Setz dir Ziele mit Deadline. Wenn du deine Gewohnheiten einträgst, siehst du automatisch, wie weit du schon bist.', color: 'pink' },
   { icon: Droplets, title: 'Wellness', desc: 'Wie viel hast du getrunken? Wie war die Stimmung? Wie gut hast du geschlafen? Alles auf einen Blick.', color: 'cyan' },
-  { icon: Wallet, title: 'Haushaltsbuch', desc: 'Einnahmen und Ausgaben eintragen — sieh sofort, wo dein Geld hingeht und was noch übrig ist.', color: 'blue' },
+  { icon: Wallet, title: 'Budget', desc: 'Einnahmen und Ausgaben eintragen — sieh sofort, wo dein Geld hingeht und was noch übrig ist.', color: 'blue' },
   { icon: PiggyBank, title: 'Spar-Challenge', desc: 'Die beliebte 52-Wochen-Methode: Jede Woche ein bisschen mehr sparen — Schritt für Schritt zum Ziel.', color: 'amber' },
   { icon: UtensilsCrossed, title: 'Essen planen', desc: 'Rezepte sammeln und die Woche durchplanen. Die App erstellt dir daraus automatisch die Einkaufsliste.', color: 'purple' },
   { icon: ShoppingCart, title: 'Einkaufsliste', desc: 'Alles auf einer Liste zum Abhaken — im Laden große Schrift, damit du schnell findest, was du brauchst.', color: 'purple' },
   { icon: Timer, title: 'Fokus-Timer', desc: 'Konzentriert arbeiten oder lernen — Timer starten, Pause machen, fertig. Wie Pomodoro, nur für dich einstellbar.', color: 'indigo' },
   { icon: BookOpen, title: 'Tagebuch', desc: 'Gedanken aufschreiben, Dankbarkeit üben oder kurz notieren, was dir wichtig ist.', color: 'rose' },
-  { icon: CalendarDays, title: 'Monatsplaner', desc: 'Aufgaben fürs Monat sortieren — nach Wochen und Wichtigkeit, mit Platz für Notizen.', color: 'cyan' },
+  { icon: CalendarDays, title: 'Monatsplaner', desc: 'Aufgaben für den Monat sortieren — nach Wochen und Wichtigkeit, mit Platz für Notizen.', color: 'cyan' },
   { icon: BarChart3, title: 'Statistik', desc: 'Sieh, wie sich deine Woche, dein Monat und dein Jahr entwickelt — mit übersichtlichen Verläufen.', color: 'purple' },
   { icon: Share2, title: 'Wochenrückblick teilen', desc: 'Deine Woche als Text speichern oder mit Freundin, Freund oder Coach teilen.', color: 'indigo' },
   { icon: Award, title: 'Erfolge', desc: 'Sammle Abzeichen, wenn du dranbleibst — kleine Belohnungen, die motivieren.', color: 'amber' },
@@ -44,7 +45,7 @@ const colorMap: Record<string, string> = {
 }
 
 export function LandingPage() {
-  const { loginAsDemo } = useAuth()
+  const { user, loginAsDemo } = useAuth()
   const navigate = useNavigate()
 
   const handleDemo = () => {
@@ -60,9 +61,18 @@ export function LandingPage() {
 
         <nav className="relative flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
           <Logo size="sm" />
-          <Link to="/login">
-            <Button variant="secondary" size="sm">Anmelden</Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            {isAdmin(user) && (
+              <Link to="/admin">
+                <Button variant="ghost" size="sm">Admin</Button>
+              </Link>
+            )}
+            <Link to={isAdmin(user) ? '/admin' : '/login'}>
+              <Button variant="secondary" size="sm">
+                {isAdmin(user) ? 'News verwalten' : 'Anmelden'}
+              </Button>
+            </Link>
+          </div>
         </nav>
 
         <section className="relative px-6 pt-8 pb-20 max-w-6xl mx-auto text-center">
@@ -75,7 +85,7 @@ export function LandingPage() {
             <span className="gradient-text">Im Fluss.</span>
           </h1>
           <p className="text-muted text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-            Gewohnheiten tracken, Geld im Blick behalten, Essen fürs planen und jeden Sonntag wissen,
+            Gewohnheiten erfassen, Geld im Blick behalten, Essen für die Woche planen und jeden Sonntag wissen,
             worauf du dich diese Woche konzentrierst. Eine App für deinen Alltag — verständlich, auf Deutsch,
             ohne Technik-Gerede.
           </p>

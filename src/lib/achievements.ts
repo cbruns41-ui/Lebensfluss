@@ -65,7 +65,7 @@ export function computeAchievements(data: AppData): Achievement[] {
     },
     {
       id: 'budget_10',
-      title: 'Finanz-Tracker',
+      title: 'Budget-Starter',
       description: '10 Budget-Einträge erfasst',
       icon: '💰',
       unlocked: data.transactions.length >= 10,

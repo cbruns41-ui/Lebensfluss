@@ -32,7 +32,7 @@ export function AGBPage() {
         <h2 className="text-lg font-semibold text-slate-100 mb-2">§ 2 Vertragsgegenstand</h2>
         <p>
           {c.appName} ist eine webbasierte Progressive Web App (PWA) zur persönlichen Organisation. Der
-          Leistungsumfang umfasst insbesondere Gewohnheits-Tracking, Budgetverwaltung, Wellness-Erfassung,
+          Leistungsumfang umfasst insbesondere Gewohnheitserfassung, Budgetverwaltung, Wellness-Erfassung,
           Tagebuch, Essensplanung, Ziele, Statistiken und weitere Module, wie sie in der App zum Zeitpunkt
           des Vertragsschlusses beschrieben sind.
         </p>

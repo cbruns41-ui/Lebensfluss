@@ -130,6 +130,13 @@ export function DatenschutzPage() {
         <p>Wir setzen folgende Dienstleister ein, die personenbezogene Daten in unserem Auftrag verarbeiten:</p>
         <div className="glass rounded-xl p-4 mt-3 space-y-3 text-sm">
           <div>
+            <p className="font-medium text-slate-200">{c.frontendHostingProvider}</p>
+            <p>Auslieferung der Web-App (statische Dateien), Standort: {c.frontendHostingLocation}</p>
+            <a href={c.frontendHostingPrivacyUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline text-xs">
+              Datenschutzerklärung Vercel
+            </a>
+          </div>
+          <div>
             <p className="font-medium text-slate-200">{c.hostingProvider}</p>
             <p>Hosting der API (PocketBase), Speicherort: {c.hostingLocation}</p>
             <a href={c.hostingPrivacyUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline text-xs">

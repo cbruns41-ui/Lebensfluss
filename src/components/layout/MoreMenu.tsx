@@ -18,7 +18,7 @@ const moreItems = [
   { to: '/app/erfolge', icon: Award, label: 'Erfolge', desc: 'Abzeichen sammeln', color: 'amber' },
   { to: '/app/wochenreview', icon: ClipboardList, label: 'Wochenreview', desc: 'Woche reflektieren', color: 'indigo' },
   { to: '/app/wochenritual', icon: Sun, label: 'Sonntags-Ritual', desc: 'Geführter Wochenstart', color: 'amber' },
-  { to: '/app/einstellungen', icon: Settings, label: 'Einstellungen', desc: 'Profil, Theme & Backup', color: 'slate' },
+  { to: '/app/einstellungen', icon: Settings, label: 'Einstellungen', desc: 'Profil, Design & Backup', color: 'slate' },
 ]
 
 const colorMap: Record<string, string> = {
