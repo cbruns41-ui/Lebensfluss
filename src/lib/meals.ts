@@ -126,7 +126,13 @@ export function copyMealsFromDay(
   if (!source) return mealPlan
   return mealPlan.map(d =>
     d.day === toDay
-      ? { ...d, ...Object.fromEntries(slots.map(k => [k, source[k]])) }
+      ? {
+          ...d,
+          ...Object.fromEntries(slots.map(k => [k, source[k]])),
+          linkedRecipes: source.linkedRecipes
+            ? { ...source.linkedRecipes }
+            : undefined,
+        }
       : d,
   ) as MealPlanDay[]
 }

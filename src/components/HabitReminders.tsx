@@ -1,8 +1,10 @@
 import { useEffect } from 'react'
 import { useData } from '../contexts/DataContext'
 import {
-  getTodayPendingHabits, migrateHabits, isCompleted, isHabitDueOnDate,
+  getTodayPendingHabits, isCompleted, isHabitDueOnDate,
 } from '../lib/habits'
+import { getActiveFocusMode, getActiveRitual } from '../lib/sundayRitual'
+import { filterHabitsForFocusWeek } from '../lib/focusMode'
 import { toDateKey } from '../lib/utils'
 
 function wasSent(key: string): boolean {
@@ -29,9 +31,15 @@ export function HabitReminders() {
       const hh = now.getHours()
       const mm = now.getMinutes()
       const todayKey = toDateKey(now)
-      const habits = migrateHabits(data.habits)
+      const ritual = getActiveRitual(data)
+      const habits = filterHabitsForFocusWeek(
+        data.habits,
+        ritual.focusHabitIds ?? [],
+        getActiveFocusMode(data),
+        !!ritual.completedAt,
+      )
 
-      if (data.settings.dailyReminder && hh === 9 && mm === 0) {
+      if (data.settings.dailyReminder && hh === 9 && mm < 2) {
         const key = `digest-${todayKey}`
         if (!wasSent(key)) {
           const pending = getTodayPendingHabits(habits, data.habitCompletions, now)
@@ -51,7 +59,9 @@ export function HabitReminders() {
         const reminder = habit.reminder
         if (!reminder?.enabled) continue
         const [rh, rm] = reminder.time.split(':').map(Number)
-        if (hh !== rh || mm !== rm) continue
+        const nowMinutes = hh * 60 + mm
+        const reminderMinutes = rh * 60 + rm
+        if (nowMinutes < reminderMinutes || nowMinutes >= reminderMinutes + 2) continue
 
         const key = `habit-${habit.id}-${todayKey}-${reminder.time}`
         if (wasSent(key)) continue
@@ -68,7 +78,7 @@ export function HabitReminders() {
 
       if (data.settings.habitStreakReminder) {
         const eveningHour = data.settings.habitEveningReminderHour ?? 20
-        if (hh === eveningHour && mm === 0) {
+        if (hh === eveningHour && mm < 2) {
           const key = `streak-${todayKey}`
           if (!wasSent(key)) {
             const pending = getTodayPendingHabits(habits, data.habitCompletions, now)

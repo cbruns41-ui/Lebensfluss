@@ -29,7 +29,7 @@ export function NewsFeed() {
         {items.map(item => (
           <article key={item.id} className="glass rounded-2xl p-5 text-left">
             <div className="flex items-start justify-between gap-3 mb-2">
-              <h3 className="font-semibold text-slate-100">{item.title}</h3>
+              <h3 className="font-semibold">{item.title}</h3>
               {item.pinned && (
                 <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-amber-400 shrink-0">
                   <Pin size={12} /> Angepinnt

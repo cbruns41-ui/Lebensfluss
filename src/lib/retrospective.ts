@@ -1,5 +1,6 @@
 import type { AppData } from '../types'
 import { formatMonthYear, getDaysInMonth, toDateKey } from './utils'
+import { migrateHabits, isHabitDueOnDate, getWeekStartKey } from './habits'
 
 export interface MonthSummary {
   monthKey: string
@@ -80,17 +81,40 @@ export function computeMonthSummary(data: AppData, year: number, month: number):
   const label = formatMonthYear(new Date(year, month, 1))
 
   const completionsInMonth = data.habitCompletions.filter(c => isInMonth(c.date, monthKey))
-  const totalPossible = data.habits.length * daysInMonth
+  const habits = migrateHabits(data.habits)
+
+  const habitMonthRate = (h: (typeof habits)[number]) => {
+    if (h.schedule === 'weekly') {
+      const weeks = [...new Set(days.map(d => getWeekStartKey(d)))]
+      const target = weeks.length * (h.timesPerWeek ?? 3)
+      const done = completionsInMonth.filter(c => c.habitId === h.id).length
+      return target > 0 ? Math.round((Math.min(done, target) / target) * 100) : 0
+    }
+    const dueDays = days.filter(d => isHabitDueOnDate(h, d))
+    const done = dueDays.filter(d =>
+      completionsInMonth.some(c => c.habitId === h.id && c.date === d),
+    ).length
+    return dueDays.length > 0 ? Math.round((done / dueDays.length) * 100) : 0
+  }
+
+  const totalPossible = habits.reduce((sum, h) => {
+    if (h.schedule === 'weekly') {
+      const weeks = [...new Set(days.map(d => getWeekStartKey(d)))]
+      return sum + weeks.length * (h.timesPerWeek ?? 3)
+    }
+    return sum + days.filter(d => isHabitDueOnDate(h, d)).length
+  }, 0)
   const completionRate = totalPossible > 0
     ? Math.round((completionsInMonth.length / totalPossible) * 100)
     : 0
 
   let bestHabit: MonthSummary['habits']['bestHabit'] = null
-  if (data.habits.length > 0) {
-    const ranked = data.habits.map(h => {
-      const done = completionsInMonth.filter(c => c.habitId === h.id).length
-      return { name: h.name, icon: h.icon, rate: Math.round((done / daysInMonth) * 100) }
-    }).sort((a, b) => b.rate - a.rate)
+  if (habits.length > 0) {
+    const ranked = habits.map(h => ({
+      name: h.name,
+      icon: h.icon,
+      rate: habitMonthRate(h),
+    })).sort((a, b) => b.rate - a.rate)
     if (ranked[0]) bestHabit = ranked[0]
   }
 

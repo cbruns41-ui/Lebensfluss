@@ -16,12 +16,7 @@ import {
   shareWeeklyReviewExport, downloadWeeklyReviewExport, buildWeeklyReviewExport,
 } from '../lib/weeklyReviewGuide'
 
-function getWeekStart(): string {
-  const d = new Date()
-  const day = d.getDay()
-  d.setDate(d.getDate() - day + (day === 0 ? -6 : 1))
-  return d.toISOString().split('T')[0]
-}
+import { getWeekStart } from '../lib/sundayRitual'
 
 export function WeeklyReviewPage() {
   const { user } = useAuth()

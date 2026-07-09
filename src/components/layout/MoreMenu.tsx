@@ -1,9 +1,13 @@
 import { NavLink } from 'react-router-dom'
 import {
   PiggyBank, CalendarDays, Flag, Settings, LogOut, X, Download,
-  Droplets, BookOpen, Timer, BarChart3, Award, ClipboardList, CalendarRange, Sun, Wallet,
+  Droplets, BookOpen, Timer, BarChart3, Award, ClipboardList, CalendarRange, Sun, Wallet, Shield,
 } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
+import { useData } from '../../contexts/DataContext'
+import { isAdmin } from '../../lib/admin'
+import { getActiveFocusMode, getActiveRitual } from '../../lib/sundayRitual'
+import { filterNavItems, FOCUS_MODE_LABELS } from '../../lib/focusMode'
 
 const moreItems = [
   { to: '/app/finanzen', icon: Wallet, label: 'Budget', desc: 'Einnahmen, Ausgaben & Meal-Kosten', color: 'blue' },
@@ -40,7 +44,11 @@ interface MoreMenuProps {
 }
 
 export function MoreMenu({ open, onClose }: MoreMenuProps) {
-  const { logout } = useAuth()
+  const { user, logout } = useAuth()
+  const { data } = useData()
+  const focusMode = getActiveFocusMode(data)
+  const ritual = getActiveRitual(data)
+  const visibleItems = filterNavItems(moreItems, focusMode)
 
   if (!open) return null
 
@@ -59,18 +67,25 @@ export function MoreMenu({ open, onClose }: MoreMenuProps) {
       <div className="relative w-full max-w-lg glass rounded-t-3xl p-6 safe-bottom slide-up max-h-[85dvh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">Alle Funktionen</h2>
-          <button onClick={onClose} className="p-2 rounded-xl hover:bg-slate-700/50">
+          <button onClick={onClose} className="p-2 rounded-xl hover-surface">
             <X size={20} />
           </button>
         </div>
 
+        {ritual.completedAt && focusMode !== 'full' && (
+          <p className="text-xs text-emerald-400/90 bg-emerald-500/10 rounded-xl px-3 py-2 mb-3">
+            Fokus-Woche: {FOCUS_MODE_LABELS[focusMode]}
+            {(ritual.focusHabitIds?.length ?? 0) > 0 && ` · ${ritual.focusHabitIds!.length} Prioritäts-Gewohnheit${ritual.focusHabitIds!.length > 1 ? 'en' : ''}`}
+          </p>
+        )}
+
         <div className="space-y-1 mb-4">
-          {moreItems.map(({ to, icon: Icon, label, desc, color }) => (
+          {visibleItems.map(({ to, icon: Icon, label, desc, color }) => (
             <NavLink
               key={to}
               to={to}
               onClick={onClose}
-              className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-700/40 transition-all active:scale-[0.98]"
+              className="flex items-center gap-3 p-3 rounded-2xl hover-surface transition-all active:scale-[0.98]"
             >
               <div className={`w-10 h-10 rounded-xl ${colorMap[color]} flex items-center justify-center shrink-0`}>
                 <Icon size={20} />
@@ -83,10 +98,25 @@ export function MoreMenu({ open, onClose }: MoreMenuProps) {
           ))}
         </div>
 
-        <div className="space-y-1 border-t border-slate-700/50 pt-4">
+        <div className="space-y-1 border-t divider pt-4">
+          {isAdmin(user) && (
+            <NavLink
+              to="/admin"
+              onClick={onClose}
+              className="flex items-center gap-3 p-3 rounded-2xl hover-surface transition-all active:scale-[0.98] border border-emerald-500/20"
+            >
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center shrink-0">
+                <Shield size={20} className="text-emerald-400" />
+              </div>
+              <div className="min-w-0">
+                <p className="font-medium text-sm">Admin-Bereich</p>
+                <p className="text-xs text-muted truncate">News & Support verwalten</p>
+              </div>
+            </NavLink>
+          )}
           <button
             onClick={handleInstall}
-            className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-700/40 transition-all w-full"
+            className="flex items-center gap-3 p-3 rounded-2xl hover-surface transition-all w-full"
           >
             <div className="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center">
               <Download size={20} className="text-blue-400" />

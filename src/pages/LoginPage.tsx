@@ -30,9 +30,9 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-dvh flex flex-col safe-top">
+    <div className="min-h-dvh flex flex-col safe-top page-bg">
       <div className="px-6 py-5">
-        <Link to="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-slate-200 transition-colors text-sm">
+        <Link to="/" className="inline-flex items-center gap-2 link-muted text-sm">
           <ArrowLeft size={16} /> Zurück
         </Link>
       </div>
@@ -44,11 +44,17 @@ export function LoginPage() {
             <h1 className="text-2xl font-bold mb-2">
               {mode === 'login' ? 'Willkommen zurück' : 'Konto erstellen'}
             </h1>
-            <p className="text-slate-400 text-sm">
+            <p className="text-muted text-sm">
               {mode === 'login'
-                ? 'Melde dich an – deine Daten liegen nur auf diesem Gerät.'
+                ? 'Melde dich an – dein Konto liegt nur in diesem Browser (kein Cloud-Login nötig).'
                 : 'Registriere dich lokal – danach wählst du Testphase oder Plan.'}
             </p>
+            {mode === 'login' && (
+              <p className="text-xs text-faint mt-3 max-w-sm mx-auto leading-relaxed">
+                Kein Konto auf diesem Gerät? Zuerst unter „Jetzt registrieren“ anlegen.
+                Nach dem Login ggf. auf der nächsten Seite die Testphase starten (AGB-Haken setzen).
+              </p>
+            )}
             {mode === 'login' && isAdminEmail(email) && (
               <p className="text-xs text-emerald-400/90 mt-2">
                 Admin-Zugang → nach dem Login gelangst du in den News-Bereich.
@@ -73,7 +79,7 @@ export function LoginPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-[38px] text-slate-500 hover:text-slate-300"
+                className="absolute right-3 top-[38px] text-faint hover:text-muted"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -88,7 +94,7 @@ export function LoginPage() {
             </Button>
           </form>
 
-          <p className="text-center text-sm text-slate-400 mt-6">
+          <p className="text-center text-sm text-muted mt-6">
             {mode === 'login' ? 'Noch kein Konto?' : 'Bereits registriert?'}{' '}
             <button
               onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError('') }}
@@ -98,7 +104,7 @@ export function LoginPage() {
             </button>
           </p>
 
-          <div className="mt-4 pt-4 border-t border-slate-700/50">
+          <div className="mt-4 pt-4 border-t divider">
             <Button
               variant="ghost"
               className="w-full"

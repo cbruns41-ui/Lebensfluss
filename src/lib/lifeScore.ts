@@ -1,6 +1,6 @@
 import type { AppData } from '../types'
-import { getActiveFocusMode } from './sundayRitual'
-import { getLifeScoreWeights } from './focusMode'
+import { getActiveFocusMode, getActiveRitual } from './sundayRitual'
+import { getLifeScoreWeights, getHabitsForScoring } from './focusMode'
 import { getTodayHabitProgress } from './habits'
 import { toDateKey } from './utils'
 
@@ -17,9 +17,17 @@ export interface LifeScoreBreakdown {
 function scoreForDate(data: AppData, dateKey: string, weights = getLifeScoreWeights(getActiveFocusMode(data))): Omit<LifeScoreBreakdown, 'label'> {
   const d = new Date(dateKey + 'T12:00:00')
   const monthKey = dateKey.slice(0, 7)
+  const ritual = getActiveRitual(data)
+  const mode = getActiveFocusMode(data)
+  const scoringHabits = getHabitsForScoring(
+    data.habits,
+    ritual.focusHabitIds ?? [],
+    mode,
+    !!ritual.completedAt,
+  )
 
-  const { done, total: habitTotal } = getTodayHabitProgress(data.habits, data.habitCompletions, d)
-  const habits = habitTotal > 0 ? Math.round((done / habitTotal) * 100) : (data.habits.length === 0 ? 50 : 0)
+  const { done, total: habitTotal } = getTodayHabitProgress(scoringHabits, data.habitCompletions, d)
+  const habits = habitTotal > 0 ? Math.round((done / habitTotal) * 100) : (scoringHabits.length === 0 ? 50 : 0)
 
   const water = data.waterEntries.find(w => w.date === dateKey)?.ml ?? 0
   const waterPct = Math.min(100, (water / data.settings.waterGoalMl) * 100)

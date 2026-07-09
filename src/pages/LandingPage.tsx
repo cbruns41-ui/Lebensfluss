@@ -3,7 +3,7 @@ import {
   Target, Wallet, PiggyBank, UtensilsCrossed, CalendarDays, Flag,
   Smartphone, Sparkles, CheckCircle2, ArrowRight, Zap, FlaskConical,
   Droplets, BookOpen, Timer, BarChart3, Award, Shield, Sun, ShoppingCart,
-  Share2,
+  Share2, Construction,
 } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { LegalFooter } from '../components/legal/LegalFooter'
@@ -12,6 +12,7 @@ import { isAdmin } from '../lib/admin'
 import { pricing, formatPrice } from '../config/pricing'
 import { NewsFeed } from '../components/NewsFeed'
 import { Logo, LogoMark } from '../components/brand/Logo'
+import { siteNotice } from '../config/legal'
 
 
 const features = [
@@ -54,7 +55,7 @@ export function LandingPage() {
   }
 
   return (
-    <div className="min-h-dvh">
+    <div className="min-h-dvh page-bg">
       <header className="relative overflow-hidden safe-top">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-teal-500/5" />
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl" />
@@ -75,7 +76,19 @@ export function LandingPage() {
           </div>
         </nav>
 
-        <section className="relative px-6 pt-8 pb-20 max-w-6xl mx-auto text-center">
+        <div className="relative px-6 max-w-6xl mx-auto mb-6" role="note" aria-label={siteNotice.title}>
+          <div className="glass rounded-2xl border border-amber-500/35 bg-amber-500/8 p-4 sm:p-5 flex gap-3 sm:gap-4 items-start text-left">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center shrink-0">
+              <Construction size={20} className="text-amber-400" aria-hidden />
+            </div>
+            <div className="min-w-0">
+              <p className="font-semibold text-sm text-amber-400 mb-1.5">{siteNotice.title}</p>
+              <p className="text-sm text-muted leading-relaxed">{siteNotice.body}</p>
+            </div>
+          </div>
+        </div>
+
+        <section className="relative px-6 pt-2 pb-20 max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-emerald-400 mb-6">
             <Zap size={14} />
             {pricing.trialDays} Tage gratis testen · Auf Deutsch · Fürs Handy gemacht
@@ -214,9 +227,13 @@ export function LandingPage() {
         <p className="text-muted mb-2">
           {pricing.trialDays} Tage kostenlos testen – danach ab {formatPrice(pricing.lifetime.price)} einmalig oder Abo.
         </p>
-        <p className="text-faint text-sm mb-8 flex items-center justify-center gap-2">
+        <p className="text-faint text-sm mb-4 flex items-center justify-center gap-2">
           <Shield size={14} className="text-emerald-400/60" />
           DSGVO-konform · Deine Daten bleiben auf deinem Gerät
+        </p>
+        <p className="text-xs text-muted max-w-md mx-auto mb-8 leading-relaxed">
+          <Construction size={12} className="inline text-amber-400 mr-1 -mt-0.5" aria-hidden />
+          {siteNotice.title}: Derzeit keine kommerzielle Nutzung — Preisangaben sind Vorschau.
         </p>
         <Link to="/login">
           <Button size="lg">
@@ -225,7 +242,7 @@ export function LandingPage() {
         </Link>
       </section>
 
-      <LegalFooter className="border-t border-slate-800" />
+      <LegalFooter className="border-t divider" />
     </div>
   )
 }

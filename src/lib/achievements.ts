@@ -2,6 +2,7 @@ import type { AppData, Achievement } from '../types'
 import { toDateKey } from './utils'
 import { getHabitStreak, migrateHabits } from './habits'
 import { computeLifeScore, getLifeScoreHistory } from './lifeScore'
+import { getWeekStart } from './sundayRitual'
 
 export function computeAchievements(data: AppData): Achievement[] {
   const today = toDateKey(new Date())
@@ -145,7 +146,8 @@ export function computeAchievements(data: AppData): Achievement[] {
       title: 'Wochenstarter',
       description: 'Sonntags-Ritual abgeschlossen',
       icon: '☀️',
-      unlocked: !!data.weeklyRitual.completedAt,
+      unlocked: !!data.weeklyRitual.completedAt
+        && data.weeklyRitual.weekStart === getWeekStart(),
     },
     {
       id: 'goal_habits',

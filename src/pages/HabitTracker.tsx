@@ -16,8 +16,11 @@ import { applyHabitDrivenGoals } from '../lib/goalHabits'
 import {
   defaultHabitFields, migrateHabit, getHabitStreak, isHabitDueOnDate, isCompleted,
   getWeeklyCompletionCount, formatScheduleLabel, formatReminderLabel,
+  getTodayDueHabits, getTodayHabitProgress,
   WEEKDAY_LABELS_MON_FIRST, WEEKDAY_VALUES_MON_FIRST,
 } from '../lib/habits'
+import { getActiveFocusMode, getActiveRitual } from '../lib/sundayRitual'
+import { filterHabitsForFocusWeek, FOCUS_MODE_LABELS } from '../lib/focusMode'
 import type { Habit, HabitScheduleType } from '../types'
 
 type View = 'today' | '31days' | 'monthly'
@@ -141,6 +144,14 @@ export function HabitTracker() {
         ...prev,
         habits: prev.habits.filter(h => h.id !== id),
         habitCompletions: prev.habitCompletions.filter(c => c.habitId !== id),
+        goals: prev.goals.map(g => ({
+          ...g,
+          linkedHabitIds: (g.linkedHabitIds ?? []).filter(hid => hid !== id),
+        })),
+        weeklyRitual: {
+          ...prev.weeklyRitual,
+          focusHabitIds: (prev.weeklyRitual.focusHabitIds ?? []).filter(hid => hid !== id),
+        },
       })),
     })
   }
@@ -149,14 +160,17 @@ export function HabitTracker() {
     setWeekdays(prev => prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day])
   }
 
-  const todayHabits = data.habits.map(migrateHabit).filter(h => isHabitDueOnDate(h, today))
-  const todayDone = todayHabits.filter(h => {
-    if (h.schedule === 'weekly') {
-      const count = getWeeklyCompletionCount(h.id, today, data.habitCompletions)
-      return count >= (h.timesPerWeek ?? 3) || isCompleted(h.id, todayKey, data.habitCompletions)
-    }
-    return isCompleted(h.id, todayKey, data.habitCompletions)
-  }).length
+  const activeRitual = getActiveRitual(data)
+  const focusMode = getActiveFocusMode(data)
+  const scopedHabits = filterHabitsForFocusWeek(
+    data.habits,
+    activeRitual.focusHabitIds ?? [],
+    focusMode,
+    !!activeRitual.completedAt,
+  )
+  const todayHabits = getTodayDueHabits(scopedHabits, data.habitCompletions, today)
+  const { done: todayDone, total: todayTotal } = getTodayHabitProgress(scopedHabits, data.habitCompletions, today)
+  const showFocusHint = !!activeRitual.completedAt && focusMode !== 'full' && (activeRitual.focusHabitIds?.length ?? 0) > 0
 
   const year = currentMonth.getFullYear()
   const month = currentMonth.getMonth()
@@ -171,6 +185,17 @@ export function HabitTracker() {
         helpId="gewohnheiten"
         actions={<Button size="sm" onClick={openCreate}><Plus size={18} /> Neu</Button>}
       />
+
+      {showFocusHint && (
+        <Card className="mb-4 border-emerald-500/15 py-2.5 px-4">
+          <p className="text-xs text-muted">
+            <span className="text-emerald-400 font-medium">Fokus-Woche ({FOCUS_MODE_LABELS[focusMode]}):</span>
+            {focusMode === 'basics'
+              ? ' Nur deine Prioritäts-Gewohnheiten sind heute sichtbar.'
+              : ' Prioritäts-Gewohnheiten stehen oben — alle anderen darunter.'}
+          </p>
+        </Card>
+      )}
 
       <div className="flex gap-1 mb-6 glass rounded-xl p-1">
         {([
@@ -198,13 +223,13 @@ export function HabitTracker() {
           <Card className="flex items-center justify-between py-4">
             <div>
               <p className="text-sm text-muted">Heute erledigt</p>
-              <p className="text-2xl font-bold text-emerald-400">{todayDone}/{todayHabits.length}</p>
+              <p className="text-2xl font-bold text-emerald-400">{todayDone}/{todayTotal}</p>
             </div>
-            <div className="w-16 h-16 rounded-full border-4 border-slate-700 flex items-center justify-center"
+            <div className="w-16 h-16 rounded-full border-4 border-[var(--progress-track)] flex items-center justify-center"
               style={{
-                background: `conic-gradient(#10b981 ${todayHabits.length ? (todayDone / todayHabits.length) * 360 : 0}deg, transparent 0)`,
+                background: `conic-gradient(#10b981 ${todayTotal ? (todayDone / todayTotal) * 360 : 0}deg, transparent 0)`,
               }}>
-              <span className="text-sm font-bold">{todayHabits.length ? Math.round((todayDone / todayHabits.length) * 100) : 0}%</span>
+              <span className="text-sm font-bold">{todayTotal ? Math.round((todayDone / todayTotal) * 100) : 0}%</span>
             </div>
           </Card>
 
@@ -242,10 +267,17 @@ export function HabitTracker() {
                       {habit.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={cn('font-medium', done && 'line-through text-muted')}>{habit.name}</p>
+                      <p className={cn('font-medium flex items-center gap-2 flex-wrap', done && 'line-through text-muted')}>
+                        {habit.name}
+                        {habit.schedule === 'weekly' && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-400 font-normal no-underline">
+                            Wochenziel
+                          </span>
+                        )}
+                      </p>
                       <p className="text-xs text-muted mt-0.5">
                         {formatScheduleLabel(habit)}
-                        {weekCount !== null && ` · ${weekCount}/${habit.timesPerWeek} diese Woche`}
+                        {weekCount !== null && ` · ${weekCount}/${habit.timesPerWeek ?? 3} diese Woche`}
                         {streak > 0 && ` · 🔥 ${streak}${habit.schedule === 'weekly' ? ' Wo.' : ''}`}
                       </p>
                       {formatReminderLabel(habit) && (
@@ -268,7 +300,7 @@ export function HabitTracker() {
         </div>
       ) : view === '31days' ? (
         <div className="space-y-4">
-          {data.habits.map(habit => {
+          {scopedHabits.map(habit => {
             const h = migrateHabit(habit)
             const streak = getHabitStreak(h, data.habitCompletions)
             const dueDays = last31Days.filter(d => isHabitDueOnDate(h, d))
@@ -323,7 +355,7 @@ export function HabitTracker() {
             <button onClick={() => setCurrentMonth(new Date(year, month + 1))} className="p-2 rounded-xl hover:bg-slate-700/50"><ChevronRight size={20} /></button>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-3 mb-4">
-            {data.habits.map(h => (
+            {scopedHabits.map(h => (
               <button key={h.id} onClick={() => setSelectedHabit(h.id)}
                 className={cn('flex items-center gap-2 px-3 py-2 rounded-xl text-sm whitespace-nowrap shrink-0',
                   selectedHabit === h.id ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'glass')}>

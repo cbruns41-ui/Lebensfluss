@@ -21,8 +21,8 @@ export function CookieConsent() {
   return (
     <div className="fixed bottom-0 inset-x-0 z-50 p-4 safe-bottom pointer-events-none">
       <div className="max-w-lg mx-auto glass rounded-2xl p-4 shadow-xl pointer-events-auto">
-        <p className="text-sm text-slate-300 mb-3 leading-relaxed">
-          Wir verwenden <strong className="text-slate-200">keine Marketing- oder Tracking-Cookies</strong>.
+        <p className="text-sm text-muted mb-3 leading-relaxed">
+          Wir verwenden <strong className="text-[var(--text-primary)]">keine Marketing- oder Tracking-Cookies</strong>.
           Technisch notwendige Speicherung im Browser (localStorage) dient Login, App-Funktion und diesem Hinweis
           (§ 25 TTDSG).{' '}
           <Link to="/datenschutz" className="text-emerald-400 hover:underline">Datenschutzerklärung</Link>

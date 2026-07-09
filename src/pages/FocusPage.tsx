@@ -4,6 +4,7 @@ import { useData } from '../contexts/DataContext'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { PageHeader } from '../components/ui/PageHeader'
+import { ProgressRing } from '../components/ui/ProgressRing'
 import { generateId, toDateKey } from '../lib/utils'
 
 export function FocusPage() {
@@ -72,11 +73,23 @@ export function FocusPage() {
         ))}
       </div>
 
-      <Card className="mb-6 text-center py-10 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ background: `conic-gradient(${mode === 'work' ? '#10b981' : '#3b82f6'} ${progress}%, transparent ${progress}%)` }} />
-        <Timer size={32} className={`mx-auto mb-4 ${mode === 'work' ? 'text-emerald-400' : 'text-blue-400'}`} />
-        <p className="text-6xl font-bold tabular-nums">{String(mins).padStart(2, '0')}:{String(secs).padStart(2, '0')}</p>
-        <p className="text-sm text-muted mt-2">{running ? 'Läuft...' : 'Bereit?'}</p>
+      <Card className="mb-6 text-center py-8 relative overflow-hidden">
+        <div className="flex flex-col items-center">
+          <ProgressRing
+            progress={progress}
+            size={220}
+            strokeWidth={8}
+            color={mode === 'work' ? '#10b981' : '#3b82f6'}
+          >
+            <div className="text-center">
+              <Timer size={28} className={`mx-auto mb-2 ${mode === 'work' ? 'text-emerald-400' : 'text-blue-400'} ${running ? 'animate-pulse' : ''}`} />
+              <p className="text-5xl font-bold tabular-nums tracking-tight">
+                {String(mins).padStart(2, '0')}:{String(secs).padStart(2, '0')}
+              </p>
+              <p className="text-sm text-muted mt-1">{running ? 'Läuft…' : 'Bereit?'}</p>
+            </div>
+          </ProgressRing>
+        </div>
       </Card>
 
       <div className="flex gap-3 justify-center mb-8">
@@ -85,6 +98,13 @@ export function FocusPage() {
         </Button>
         <Button size="lg" variant="secondary" onClick={reset}><RotateCcw size={20} /></Button>
       </div>
+
+      <Card className="mb-4 border-indigo-500/15 py-3 px-4">
+        <p className="text-xs text-muted leading-relaxed">
+          Nur <span className="text-indigo-400 font-medium">vollständig durchlaufene</span> Fokus- oder Pausen-Runden zählen.
+          Vorzeitiges Stoppen oder Zurücksetzen wird nicht erfasst.
+        </p>
+      </Card>
 
       <div className="grid grid-cols-2 gap-3">
         <Card className="text-center py-4"><p className="text-2xl font-bold text-emerald-400">{todayFocus}</p><p className="text-xs text-muted">Min. heute</p></Card>

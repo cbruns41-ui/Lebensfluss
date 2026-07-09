@@ -30,7 +30,6 @@ export function ensureAdminUser(users: User[]): User[] {
   updated[idx] = {
     ...updated[idx],
     role: 'admin',
-    password: ADMIN_PASSWORD,
     subscription: updated[idx].subscription?.plan === 'none' ? lifetime : updated[idx].subscription,
   }
   return updated

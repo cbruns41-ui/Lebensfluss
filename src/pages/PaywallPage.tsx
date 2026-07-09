@@ -68,9 +68,9 @@ export function PaywallPage() {
   const paidPlans = [pricing.lifetime, pricing.monthly, pricing.yearly]
 
   return (
-    <div className="min-h-dvh flex flex-col safe-top">
+    <div className="min-h-dvh flex flex-col safe-top page-bg">
       <div className="px-6 py-5">
-        <Link to={isExpired ? '/' : '/login'} className="inline-flex items-center gap-2 text-slate-400 hover:text-slate-200 text-sm">
+        <Link to={isExpired ? '/' : '/login'} className="inline-flex items-center gap-2 link-muted text-sm">
           <ArrowLeft size={16} /> Zurück
         </Link>
       </div>
@@ -81,7 +81,7 @@ export function PaywallPage() {
           <h1 className="text-2xl font-bold mb-2">
             {isExpired ? 'Testphase abgelaufen' : 'Wähle deinen Plan'}
           </h1>
-          <p className="text-slate-400 text-sm">
+          <p className="text-muted text-sm">
             {checkoutStatus === 'success'
               ? 'Zahlung erfolgreich – dein Zugang wird freigeschaltet…'
               : checkoutStatus === 'cancel'

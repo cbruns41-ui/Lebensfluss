@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
-  ArrowLeft, LogOut, Megaphone, Mail, Inbox, Plus, Pencil, Trash2, Pin, X,
+  ArrowLeft, LogOut, Megaphone, Mail, Inbox, Plus, Pencil, Trash2, Pin, X, Smartphone,
 } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { Button } from '../components/ui/Button'
@@ -116,13 +116,20 @@ export function AdminPage() {
 
   return (
     <div className="min-h-dvh safe-top pb-8">
-      <header className="px-5 py-4 border-b border-slate-800 flex items-center justify-between max-w-3xl mx-auto">
-        <Link to="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-slate-200 text-sm">
-          <ArrowLeft size={16} /> Zur Website
+      <header className="px-5 py-4 border-b divider max-w-3xl mx-auto space-y-3">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="inline-flex items-center gap-2 link-muted text-sm">
+            <ArrowLeft size={16} /> Zur Website
+          </Link>
+          <Button variant="ghost" size="sm" onClick={handleLogout}>
+            <LogOut size={16} /> Abmelden
+          </Button>
+        </div>
+        <Link to="/app" className="block">
+          <Button variant="secondary" className="w-full" size="sm">
+            <Smartphone size={16} /> App öffnen – Nutzeransicht
+          </Button>
         </Link>
-        <Button variant="ghost" size="sm" onClick={handleLogout}>
-          <LogOut size={16} /> Abmelden
-        </Button>
       </header>
 
       <div className="px-5 pt-6 max-w-3xl mx-auto">

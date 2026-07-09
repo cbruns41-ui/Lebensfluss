@@ -23,14 +23,18 @@ export function createDemoAppData(): AppData {
       { habitId: 'h1', date: today },
       { habitId: 'h2', date: today },
     ],
+    budgetCategories: [
+      ...base.budgetCategories,
+      { id: '5', name: 'Einkommen', limit: 0, color: '#22c55e' },
+    ],
     transactions: [
       { id: 't1', categoryId: '2', amount: 45.50, note: 'Wocheneinkauf', date: today, type: 'expense' },
       { id: 't2', categoryId: '3', amount: 12.00, note: 'Bus-Ticket', date: today, type: 'expense' },
-      { id: 't3', categoryId: '1', amount: 2500, note: 'Gehalt', date: today, type: 'income' },
+      { id: 't3', categoryId: '5', amount: 2500, note: 'Gehalt', date: today, type: 'income' },
     ],
     recurringTransactions: [
       { id: 'r1', name: 'Miete', categoryId: '1', amount: 800, note: 'Warmmiete', type: 'expense', dayOfMonth: 1, active: true },
-      { id: 'r2', name: 'Gehalt', categoryId: '1', amount: 2500, note: 'Monatsgehalt', type: 'income', dayOfMonth: 25, active: true },
+      { id: 'r2', name: 'Gehalt', categoryId: '5', amount: 2500, note: 'Monatsgehalt', type: 'income', dayOfMonth: 25, active: true },
     ],
     savingsWeeks: base.savingsWeeks.map((w, i) => ({ ...w, completed: i < 3 })),
     mealPlan: mealWeekTemplates[0].plan.map((d, i) => ({

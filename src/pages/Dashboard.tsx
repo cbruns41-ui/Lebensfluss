@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
   Target, Wallet, PiggyBank, UtensilsCrossed, CalendarDays, Flag,
   TrendingUp, Flame, ChevronRight, Droplets, Timer, Award, Quote, CalendarRange,
@@ -17,17 +17,27 @@ import { getTodayMeals, getMealPlanProgress } from '../lib/meals'
 import { computeLifeScore, getLifeScoreHistory, getScoreColor } from '../lib/lifeScore'
 import { generateInsights } from '../lib/insights'
 import { isRitualDue, getActiveFocusMode, getActiveRitual } from '../lib/sundayRitual'
-import { filterQuickLinks, FOCUS_MODE_LABELS } from '../lib/focusMode'
+import { filterQuickLinks, FOCUS_MODE_LABELS, getHabitsForScoring } from '../lib/focusMode'
 
 const moodEmojis = ['', '😢', '😕', '😐', '🙂', '😄']
 
 export function Dashboard() {
   const { user } = useAuth()
   const { data } = useData()
+  const location = useLocation()
   const today = toDateKey(new Date())
   const quote = getDailyQuote()
+  const activeRitual = getActiveRitual(data)
+  const focusMode = getActiveFocusMode(data)
+  const scoringHabits = getHabitsForScoring(
+    data.habits,
+    activeRitual.focusHabitIds ?? [],
+    focusMode,
+    !!activeRitual.completedAt,
+  )
 
-  const { done: todayDone, total: todayHabits } = getTodayHabitProgress(data.habits, data.habitCompletions)
+  const { done: todayDone, total: todayHabits } = getTodayHabitProgress(scoringHabits, data.habitCompletions)
+  const focusRedirect = (location.state as { focusRedirect?: boolean; mode?: string } | null)?.focusRedirect
   const habitProgress = todayHabits > 0 ? Math.round((todayDone / todayHabits) * 100) : 0
 
   const monthExpenses = data.transactions
@@ -59,8 +69,6 @@ export function Dashboard() {
     ? [todayMeals.lunch, todayMeals.dinner, todayMeals.breakfast, todayMeals.snacks].find(m => m?.trim()) ?? null
     : null
 
-  const activeRitual = getActiveRitual(data)
-  const focusMode = getActiveFocusMode(data)
   const ritualDue = isRitualDue(data.weeklyRitual)
   const focusHabitIds = activeRitual.completedAt ? activeRitual.focusHabitIds : []
   const showFocusBanner = !!activeRitual.completedAt && focusMode !== 'full'
@@ -88,6 +96,14 @@ export function Dashboard() {
   return (
     <div className="px-5 pt-6 safe-top max-w-lg mx-auto">
       <PageHeader title={`${user?.name} 👋`} subtitle={greeting()} helpId="dashboard" />
+
+      {focusRedirect && (
+        <Card className="mb-4 border-emerald-500/20 py-2.5 px-4">
+          <p className="text-xs text-muted">
+            Dieser Bereich ist in deiner <span className="text-emerald-400 font-medium">Fokus-Woche ({(location.state as { mode?: string }).mode})</span> ausgeblendet.
+          </p>
+        </Card>
+      )}
 
       {ritualDue && (
         <Link to="/app/wochenritual">
@@ -270,7 +286,7 @@ export function Dashboard() {
         {quickLinks.map(({ to, icon: Icon, label, stat, color }) => (
           <Link key={to} to={to}>
             <Card className="flex items-center gap-4 py-3.5">
-              <div className="w-10 h-10 rounded-xl bg-slate-700/50 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl icon-surface flex items-center justify-center">
                 <Icon size={20} className={color} />
               </div>
               <p className="flex-1 font-medium text-sm">{label}</p>

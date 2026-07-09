@@ -36,6 +36,17 @@ export const legalConfig = {
   contractLanguage: 'Deutsch',
 } as const
 
+/** Öffentlicher Hinweis auf der Startseite (Beta, nicht-kommerziell). */
+export const siteNotice = {
+  title: 'Beta – noch im Aufbau',
+  body:
+    'Diese Website befindet sich noch im Aufbau und wird derzeit nicht kommerziell betrieben. ' +
+    'Dargestellte Funktionen und Preisangaben dienen der Vorschau und können sich ändern. ' +
+    'Eine kostenpflichtige Nutzung ist erst nach dem offiziellen Start möglich. ' +
+    'Die Nutzung erfolgt auf eigene Verantwortung; es wird keine Gewähr für Vollständigkeit, ' +
+    'Verfügbarkeit oder Fehlerfreiheit übernommen.',
+} as const
+
 export function formatAddress(): string {
   const { street, zip, city, country } = legalConfig
   return `${street}, ${zip} ${city}, ${country}`

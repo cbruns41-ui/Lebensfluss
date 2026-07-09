@@ -39,7 +39,7 @@ export function QuickCapture() {
           <div className="relative w-full max-w-lg glass rounded-t-3xl p-6 safe-bottom slide-up">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">Schnelle Notiz</h3>
-              <button onClick={() => setOpen(false)} className="p-2 rounded-xl hover:bg-slate-700/50">
+              <button onClick={() => setOpen(false)} className="p-2 rounded-xl hover-surface">
                 <X size={18} />
               </button>
             </div>
@@ -49,7 +49,7 @@ export function QuickCapture() {
               placeholder="Gedanke festhalten..."
               rows={3}
               autoFocus
-              className="w-full px-4 py-3 rounded-xl bg-slate-800/80 border border-slate-700/50 text-sm resize-none focus:outline-none focus:border-emerald-500/50"
+              className="w-full px-4 py-3 rounded-xl input-field text-sm resize-none focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25"
             />
             <button
               onClick={save}

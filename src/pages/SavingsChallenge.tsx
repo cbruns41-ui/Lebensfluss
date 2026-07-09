@@ -56,7 +56,7 @@ export function SavingsChallenge() {
               amount: target.amount,
               note: `Spar-Challenge Woche ${week}`,
               date: toDateKey(new Date()),
-              type: 'income' as const,
+              type: 'expense' as const,
             },
             ...transactions,
           ]

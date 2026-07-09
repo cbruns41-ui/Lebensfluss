@@ -8,7 +8,7 @@ import { Input } from '../components/ui/Input'
 import { PageHeader } from '../components/ui/PageHeader'
 import { ConfirmDialog } from '../components/ui/ConfirmDialog'
 import { useConfirm } from '../hooks/useConfirm'
-import { generateId, cn } from '../lib/utils'
+import { generateId, cn, getCurrentMonthKey, formatMonthYear } from '../lib/utils'
 import type { PlannerTask, PlannerNote } from '../types'
 
 const weeks = [1, 2, 3, 4, 5]
@@ -34,6 +34,8 @@ export function MonthlyPlanner() {
   const [noteContent, setNoteContent] = useState('')
   const [weekFilter, setWeekFilter] = useState<number | 'all'>('all')
   const currentWeek = getCurrentMonthWeek()
+  const monthKey = getCurrentMonthKey()
+  const monthNotes = data.plannerNotes.filter(n => n.month === monthKey || n.month === 'aktuell')
 
   const openTaskCreate = () => {
     setEditingTaskId(null); setTitle(''); setPriority('medium'); setWeek(undefined); setTaskModal(true)
@@ -75,7 +77,7 @@ export function MonthlyPlanner() {
     } else {
       updateData(prev => ({
         ...prev,
-        plannerNotes: [...prev.plannerNotes, { id: generateId(), content: noteContent.trim(), month: 'aktuell' }],
+        plannerNotes: [...prev.plannerNotes, { id: generateId(), content: noteContent.trim(), month: monthKey }],
       }))
     }
     setNoteModal(false)
@@ -107,7 +109,7 @@ export function MonthlyPlanner() {
 
   return (
     <div className="px-5 pt-6 safe-top max-w-lg mx-auto">
-      <PageHeader title="Monatsplaner" subtitle="Flexibel für jeden Monat" helpId="planer"
+      <PageHeader title="Monatsplaner" subtitle={formatMonthYear(new Date())} helpId="planer"
         actions={<Button size="sm" onClick={openTaskCreate}><Plus size={16} /> Aufgabe</Button>} />
 
       <Card className="mb-4 flex items-center justify-between">
@@ -158,7 +160,9 @@ export function MonthlyPlanner() {
         <button onClick={openNoteCreate} className="text-emerald-400 text-sm flex items-center gap-1"><Plus size={14} /> Notiz</button>
       </div>
       <div className="space-y-2">
-        {data.plannerNotes.map(note => (
+        {monthNotes.length === 0 ? (
+          <p className="text-xs text-faint text-center py-4">Noch keine Notizen für diesen Monat.</p>
+        ) : monthNotes.map(note => (
           <Card key={note.id} className="flex items-start gap-3">
             <p className="text-sm flex-1">{note.content}</p>
             <button onClick={() => openNoteEdit(note)} className="text-faint hover:text-emerald-400"><Pencil size={14} /></button>

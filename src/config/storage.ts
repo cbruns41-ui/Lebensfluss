@@ -17,7 +17,8 @@ export const storagePolicy = {
 } as const
 
 export const localStorageHints = {
-  backup: 'Exportiere regelmäßig ein JSON-Backup in den Einstellungen – deine Daten liegen nur auf diesem Gerät.',
-  device: 'Beim Wechsel auf ein neues Gerät: Backup exportieren, dort importieren. Dein Abo wird über die E-Mail-Adresse wiedererkannt.',
+  backup: 'Exportiere regelmäßig ein JSON-Backup – deine App-Daten liegen nur in diesem Browser.',
+  device: 'Neues Handy oder anderer Browser: Hier exportieren → dort unter Einstellungen importieren → mit derselben E-Mail anmelden. Dein Abo wird per E-Mail wiedererkannt, die App-Inhalte kommen aus dem Backup.',
   privacy: 'Gewohnheiten, Finanzen und Tagebuch verlassen dein Gerät nicht – DSGVO-freundlich by design.',
+  notifications: 'Erinnerungen funktionieren am zuverlässigsten, wenn die App installiert ist und im Hintergrund offen bleibt. Im Browser-Tab können Hinweise verpasst werden.',
 } as const

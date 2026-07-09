@@ -26,7 +26,7 @@ function isSubscriptionActive(sub: UserSubscription): boolean {
       return true
     case 'monthly':
     case 'yearly':
-      return !sub.expiresAt || now < new Date(sub.expiresAt)
+      return !!sub.expiresAt && now < new Date(sub.expiresAt)
     default:
       return false
   }
@@ -122,7 +122,7 @@ export function migrateUser(user: User): User {
   let migrated: User = { ...user }
 
   if (!migrated.subscription) {
-    migrated = { ...migrated, subscription: startTrial() }
+    migrated = { ...migrated, subscription: defaultSubscription() }
   }
 
   if (migrated.id === DEMO_USER_ID || migrated.email === DEMO_EMAIL) {

@@ -1,5 +1,5 @@
 import type { AppData } from '../types'
-import { defaultAppData } from './storage'
+import { migrateAppData } from './storage'
 
 export function exportData(data: AppData, userName: string): void {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
@@ -17,10 +17,7 @@ export function importData(file: File): Promise<AppData> {
     reader.onload = () => {
       try {
         const parsed = JSON.parse(reader.result as string)
-        const defaults = defaultAppData()
-        const merged = { ...defaults, ...parsed }
-        merged.settings = { ...defaults.settings, ...parsed.settings }
-        resolve(merged as AppData)
+        resolve(migrateAppData(parsed))
       } catch {
         reject(new Error('Ungültige Backup-Datei'))
       }

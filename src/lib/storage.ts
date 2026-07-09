@@ -1,6 +1,7 @@
 import type { AppData, User, UserSettings, WeeklyRitualState } from '../types'
 import { migrateHabits } from './habits'
 import { getWeekStart } from './sundayRitual'
+import { getCurrentMonthKey } from './utils'
 
 /** Legacy-Präfix beibehalten — bestehende Nutzerdaten im Browser bleiben erhalten. */
 const USERS_KEY = 'lifeorganizer_users'
@@ -70,7 +71,7 @@ export function defaultWeeklyRitual(): WeeklyRitualState {
   }
 }
 
-function migrateData(parsed: Partial<AppData>): AppData {
+export function migrateAppData(parsed: Partial<AppData>): AppData {
   const defaults = defaultAppData()
   return {
     ...defaults,
@@ -96,6 +97,10 @@ function migrateData(parsed: Partial<AppData>): AppData {
     savingsWeeks: (parsed.savingsWeeks ?? defaults.savingsWeeks).map(w => ({
       ...w,
       budgetTransactionId: w.budgetTransactionId,
+    })),
+    plannerNotes: (parsed.plannerNotes ?? []).map(n => ({
+      ...n,
+      month: n.month === 'aktuell' ? getCurrentMonthKey() : n.month,
     })),
   }
 }
@@ -128,7 +133,7 @@ export function getUserData(userId: string): AppData {
   try {
     const raw = localStorage.getItem(DATA_PREFIX + userId)
     if (!raw) return defaultAppData()
-    return migrateData(JSON.parse(raw))
+    return migrateAppData(JSON.parse(raw))
   } catch {
     return defaultAppData()
   }

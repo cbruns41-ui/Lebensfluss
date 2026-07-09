@@ -141,7 +141,7 @@ export function SettingsPage() {
           <button onClick={async () => {
             if (!data.settings.dailyReminder && 'Notification' in window) await Notification.requestPermission()
             updateSettings({ dailyReminder: !data.settings.dailyReminder })
-          }} className={cn('w-12 h-7 rounded-full relative', data.settings.dailyReminder ? 'bg-emerald-500' : 'bg-slate-700')}>
+          }} className={cn('w-12 h-7 rounded-full relative', data.settings.dailyReminder ? 'bg-emerald-500' : 'toggle-off')}>
             <div className={cn('w-5 h-5 rounded-full bg-white absolute top-1 transition-all', data.settings.dailyReminder ? 'left-6' : 'left-1')} />
           </button>
         </div>
@@ -152,7 +152,7 @@ export function SettingsPage() {
             <p className="text-xs text-muted">Wenn fällige Gewohnheiten noch offen sind</p>
           </div>
           <button onClick={() => updateSettings({ habitStreakReminder: !data.settings.habitStreakReminder })}
-            className={cn('w-12 h-7 rounded-full relative', data.settings.habitStreakReminder ? 'bg-emerald-500' : 'bg-slate-700')}>
+            className={cn('w-12 h-7 rounded-full relative', data.settings.habitStreakReminder ? 'bg-emerald-500' : 'toggle-off')}>
             <div className={cn('w-5 h-5 rounded-full bg-white absolute top-1 transition-all', data.settings.habitStreakReminder ? 'left-6' : 'left-1')} />
           </button>
         </div>
@@ -166,7 +166,7 @@ export function SettingsPage() {
             onChange={e => updateSettings({ habitEveningReminderHour: Math.min(23, Math.max(17, parseInt(e.target.value) || 20)) })}
           />
         )}
-        <p className="text-[10px] text-faint">Einzelne Uhrzeiten pro Gewohnheit unter Gewohnheiten → Bearbeiten. App installieren für zuverlässigere Push-Hinweise.</p>
+        <p className="text-[10px] text-faint leading-relaxed">{localStorageHints.notifications} Einzelne Uhrzeiten pro Gewohnheit unter Gewohnheiten → Bearbeiten.</p>
       </Card>
 
       <h2 className="text-xs font-medium text-muted uppercase tracking-wider mb-3">Essen & Finanzen</h2>
@@ -179,7 +179,7 @@ export function SettingsPage() {
           </div>
           <button
             onClick={() => updateSettings({ groceryBookToBudget: !data.settings.groceryBookToBudget })}
-            className={cn('w-12 h-7 rounded-full relative', data.settings.groceryBookToBudget ? 'bg-emerald-500' : 'bg-slate-700')}
+            className={cn('w-12 h-7 rounded-full relative', data.settings.groceryBookToBudget ? 'bg-emerald-500' : 'toggle-off')}
           >
             <div className={cn('w-5 h-5 rounded-full bg-white absolute top-1 transition-all', data.settings.groceryBookToBudget ? 'left-6' : 'left-1')} />
           </button>
@@ -259,10 +259,10 @@ export function SettingsPage() {
               <p className="text-xs text-center text-amber-400">Kündigung vorgemerkt – Zugang bis Periodenende.</p>
             )}
             <div className="flex flex-wrap gap-3 text-xs text-faint justify-center pt-1">
-              <Link to="/agb" className="hover:text-slate-300">AGB</Link>
-              <Link to="/datenschutz" className="hover:text-slate-300">Datenschutz</Link>
-              <Link to="/widerruf" className="hover:text-slate-300">Widerruf</Link>
-              <Link to="/impressum" className="hover:text-slate-300">Impressum</Link>
+              <Link to="/agb" className="link-muted">AGB</Link>
+              <Link to="/datenschutz" className="link-muted">Datenschutz</Link>
+              <Link to="/widerruf" className="link-muted">Widerruf</Link>
+              <Link to="/impressum" className="link-muted">Impressum</Link>
             </div>
             <Button variant="danger" className="w-full" size="sm" onClick={handleDeleteAccount}>
               <Trash2 size={16} /> Konto löschen
@@ -290,7 +290,8 @@ export function SettingsPage() {
       </Card>
 
       <h2 className="text-xs font-medium text-muted uppercase tracking-wider mb-3">Daten</h2>
-      <p className="text-xs text-muted mb-3 leading-relaxed">{localStorageHints.backup}</p>
+      <p className="text-xs text-muted mb-2 leading-relaxed">{localStorageHints.backup}</p>
+      <p className="text-xs text-muted mb-3 leading-relaxed">{localStorageHints.device}</p>
       <Card className="mb-6 space-y-3">
         <Button variant="secondary" className="w-full" onClick={handleExport}><Download size={16} /> JSON Backup exportieren</Button>
         <Button variant="secondary" className="w-full" onClick={() => fileRef.current?.click()}><Upload size={16} /> JSON Backup importieren</Button>

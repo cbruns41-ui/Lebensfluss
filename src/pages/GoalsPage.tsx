@@ -9,7 +9,7 @@ import { Input } from '../components/ui/Input'
 import { PageHeader } from '../components/ui/PageHeader'
 import { ConfirmDialog } from '../components/ui/ConfirmDialog'
 import { useConfirm } from '../hooks/useConfirm'
-import { generateId, cn } from '../lib/utils'
+import { generateId, cn, toDateKey } from '../lib/utils'
 import { getLinkedHabitStats, computeHabitDrivenCurrent } from '../lib/goalHabits'
 import type { Goal } from '../types'
 
@@ -158,7 +158,7 @@ export function GoalsPage() {
                         const habit = data.habits.find(h => h.id === hid)
                         if (!habit) return null
                         const todayDone = data.habitCompletions.some(
-                          c => c.habitId === hid && c.date === new Date().toISOString().split('T')[0],
+                          c => c.habitId === hid && c.date === toDateKey(new Date()),
                         )
                         return (
                           <span

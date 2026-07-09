@@ -186,7 +186,6 @@ export function MealPrep() {
       onConfirm: () => updateData(prev => ({
         ...prev,
         groceryList: prev.groceryList.filter(g => !g.checked),
-        groceryLastTripTransactionId: undefined,
       })),
     })
   }
@@ -385,12 +384,13 @@ export function MealPrep() {
     .map(cat => ({ category: cat, items: visibleGrocery.filter(g => g.category === cat) }))
     .filter(g => g.items.length > 0)
 
-  const tabs = [
+  const allTabs = [
     { id: 'today' as Tab, label: 'Heute', icon: Sun },
     { id: 'plan' as Tab, label: 'Woche', icon: CalendarDays },
     { id: 'recipes' as Tab, label: 'Rezepte', icon: BookOpen },
     { id: 'grocery' as Tab, label: `Einkauf (${unchecked})`, icon: ShoppingCart },
   ]
+  const tabs = isGroceryRoute ? allTabs.filter(t => t.id === 'grocery') : allTabs
 
   return (
     <div className="px-5 pt-6 safe-top max-w-lg mx-auto pb-8">
@@ -434,6 +434,7 @@ export function MealPrep() {
       </Card>
       )}
 
+      {!isGroceryRoute && (
       <div className="flex gap-1.5 mb-4 glass rounded-xl p-1 overflow-x-auto">
         {tabs.map(({ id, label, icon: Icon }) => (
           <button
@@ -448,8 +449,9 @@ export function MealPrep() {
           </button>
         ))}
       </div>
+      )}
 
-      {showGuide && progress.percent < 20 && (
+      {showGuide && !isGroceryRoute && progress.percent < 20 && (
         <Card className="mb-4 border-cyan-500/20 bg-cyan-500/5">
           <div className="flex gap-3">
             <Info size={18} className="text-cyan-400 shrink-0 mt-0.5" />
@@ -688,7 +690,7 @@ export function MealPrep() {
         </div>
       )}
 
-      {tab === 'grocery' && !isGroceryRoute && (
+      {tab === 'grocery' && !isGroceryRoute && unchecked > 0 && (
         <Card className="mb-4 py-2.5 px-4 border-purple-500/15">
           <p className="text-xs text-muted">
             Tipp: Die Einkaufsliste hat eine{' '}

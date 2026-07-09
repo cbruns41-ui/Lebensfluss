@@ -60,7 +60,7 @@ export function OnboardingModal() {
 
         <div className="flex gap-1.5 justify-center mb-6">
           {steps.map((_, i) => (
-            <div key={i} className={`h-1.5 rounded-full transition-all ${i === step ? 'w-6 bg-emerald-500' : 'w-1.5 bg-slate-600'}`} />
+            <div key={i} className={`h-1.5 rounded-full transition-all ${i === step ? 'w-6 bg-emerald-500' : 'w-1.5 bg-[var(--toggle-off)]'}`} />
           ))}
         </div>
 
@@ -74,7 +74,7 @@ export function OnboardingModal() {
           </Button>
         )}
         {step > 0 && (
-          <button onClick={() => setStep(step - 1)} className="text-sm text-muted mt-3 hover:text-slate-300">
+          <button onClick={() => setStep(step - 1)} className="text-sm text-muted mt-3 hover:text-[var(--text-primary)]">
             Zurück
           </button>
         )}

@@ -27,7 +27,7 @@ export function PageHelp({ pageId }: PageHelpProps) {
           <div className="relative w-full max-w-lg glass rounded-t-3xl sm:rounded-3xl p-6 safe-bottom slide-up max-h-[80dvh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">{content.title}</h2>
-              <button onClick={() => setOpen(false)} className="p-2 rounded-xl hover:bg-slate-700/50">
+              <button onClick={() => setOpen(false)} className="p-2 rounded-xl hover-surface">
                 <X size={20} />
               </button>
             </div>
